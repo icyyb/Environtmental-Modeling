@@ -1,0 +1,139 @@
+---
+title: "GE4212 Assignment 2"
+output:
+  html_notebook:
+    highlight: kate
+    theme: cerulean
+     
+  html_document:
+    df_print: paged
+author: A01514157E
+date: "GE4212 (2018/2019 Sem-1)"
+---
+
+# Environmental aRt:  
+```{r echo=FALSE, message=FALSE, results="hide"}
+if (!require(plotly)) {
+  install.packages("ploty", repos = "http://cran.us.r-project.org")
+  require(plotly)
+}
+
+setwd("D:/Drive/GE4212 Environmental Modelling/Assignment/Assignment 2  Environmental aRt/Data") #set work directory to locate the dataset
+#my work
+earthquakes <- read.csv("Earthquake.csv")
+earthquakes <- earthquakes[,-c(8,7,16,11,12,13,14,15)]
+earthquakes <- na.omit(earthquakes)
+
+
+
+```
+
+```{r fig.width=15, fig.height=15, fig.retina=2,fig.align='center',results="hide", echo=FALSE}
+library(plotly)
+p2 <- plot_ly(earthquakes, height = "800", width = "1000")%>%
+  add_trace(
+    type = "scatter3d",
+    name = "Earthquakes",
+    x = ~Latitude, 
+    y = ~Longitude, 
+    z = ~Depth, 
+    color = ~Magnitude,
+    size = ~Magnitude, 
+    text = ~paste('Date:', Date, '<br>Time:', Time, '<br>Lat:', Latitude,'<br>Longitude:', Longitude,'<br>Depth:',Depth, '<br>ID:',ID , '<br>Magnitude:',Magnitude),
+    sizemin = 8
+
+
+      )%>%
+  layout(title = '<b>Hidden Underworld that We Do Not See</b>', 
+         scene = list(xaxis = list(title = 'Latitude', #label axis
+                      gridcolor = 'rgb(255, 255, 255)'), 
+               yaxis = list(title = 'Longitude',
+                      gridcolor = 'rgb(255, 255, 255)'),
+               zaxis = list(title = 'Depth',
+                            gridcolor = 'rgb(255, 255, 255)')),
+         paper_bgcolor = 'rgb(243, 243, 243)',
+         plot_bgcolor = 'rgb(243, 243, 243)')
+p2
+```
+
+
+##*Hidden Underworld that We Do Not See, 2018*    
+__A0154157E__  
+`r version$version.string` aka `r version$nickname`, RStudio 1.1.453, Plotly `r packageVersion("plotly")`   
+Interactive controls at top right of the figure.  
+
+***  
+##<span style="font-family:Trebuchet MS;">Extended Interpretive Label</span> {.tabset .tabset-fade }  
+<span style = "font-family:Trebuchet MS"><p style ="text-align:justify"><font size="3">This art visualisation depicts recorded energy releases from the Earth's lithosphere also known as earthquakes. Historical records of earthquake occurrences from 1965 to 2016 are used in this visualisation piece. The colour scale shows the variations in the magnitude of the earthquake on the Richter scale, purple represents the smaller magnitude and yellowish-green representing larger. The art piece is created by representing the dataset with a 3D scatterplot. This is made possible with Plotly on CRAN project website. The dataset is read and processed in Rstudio and values for latitude, longitude and depth is plotted on the X, Y and Z axis respectively. For improved user experience, the piece is made to be interactive. Plotly plots allow users to rotate, pan, zoom to view the data visualisation. Furthermore, it allows mouse hover to allow the user to see more details regarding that specific earthquake event. The environmental issue I would like to deliver in this art visualisation piece is to show the prevalence of earthquakes. I want to show people that earthquakes are actually very common especially if you reside in a place that is proximate to tectonic boundaries. Although minor earthquakes are not much of a threat but major one posts serious damage to human properties and death. The purpose of this art piece has two main purposes:   
+(1) Show the global distribution of earthquakes.  
+(2) Show the depth of earthquakes.   
+The methods for creating this is quite straightforward and can be summarised in the workflow clip below:</font></p></span>    
+
+<video id="workflow" width = "873 " height = "480 " controls>
+  <source src="Main Comp.mp4" type="video/mp4">
+</video>
+
+
+_Word count_: 250  
+
+### Sources & Inspirations {.tabset .tabset-fade }  
+#### Source  
+__Name__:	[Significant Earthquakes, 1965-2016](https://www.kaggle.com/usgs/earthquake-database)   
+__About this file__:	Earthquakes with magnitude 5.5 or higher    
+__Rows__:	23.4k entries     
+__Columns__:	12 attributes     
+__File Format__:	Comma-separated values(CSV)    
+__Distributor__: US Geologial Survey(USGS)        
+   
+
+__Plotly__:    
+How to Plotly:   
+    ---[Getting started](https://plot.ly/r/getting-started/)  
+    ---[Plotly for R documentation](https://plotly-book.cpsievert.me/)  
+ 
+
+
+
+#### Inspirations & Reflections  
+* I am interested in the visualisation of natural occurances that can is hard to see in real life. By plotting out earthquake events with a three dimensional scatter plot, we see a reflection of the underside of the earth. I am awed by the resulting outcome.
+* I really wanted to add more features to this piece eg. button controls for users to toggle between earthquake and volcano visualisation but due to time limitations I can only show earthquakes for now :(
+
+### Used Code 
+```{r eval=FALSE, results='hide', fig.show='hide', warning=FALSE, collapse=TRUE}
+if (!require(plotly)) {
+  install.packages("ploty", repos = "http://cran.us.r-project.org")
+  require(plotly)
+}
+#basic function to check and install the require package
+
+setwd("D:/Drive/GE4212 Environmental Modelling/Assignment/Assignment 2  Environmental aRt/Data") #set work directory to locate the dataset
+#my work
+earthquakes <- read.csv("Earthquake.csv") #load csv file
+earthquakes <- earthquakes[,-c(8,7,16,11,12,13,14,15)] #removing extra columns
+earthquakes <- na.omit(earthquakes) #remove entries with no data
+
+library(plotly)
+p2 <- plot_ly(earthquakes, height = "800", width = "1000")%>%
+  add_trace(
+    type = "scatter3d", #specify plot type
+    x = ~Latitude, #linking data to axis x,y,z
+    y = ~Longitude, 
+    z = ~Depth, 
+    color = ~Magnitude, #set the colorscale to match the magnitude
+    size = ~Magnitude, #set relative size to match the magnitude
+    text = ~paste('Date:', Date, '<br>Time:', Time, '<br>Lat:', Latitude,'<br>Longitude:', Longitude,'<br>Depth:',Depth, '<br>ID:',ID , '<br>Magnitude:',Magnitude), #input and set hover info
+    sizemin = 8
+
+
+      )%>%
+  layout(title = '<b>Hidden Underworld that We Do Not See</b>', #set title, with bold </html>
+         scene = list(xaxis = list(title = 'Latitude', #label axis
+                      gridcolor = 'rgb(255, 255, 255)'),#axis color black same for below
+               yaxis = list(title = 'Longitude',
+                      gridcolor = 'rgb(255, 255, 255)'),
+               zaxis = list(title = 'Depth',
+                            gridcolor = 'rgb(255, 255, 255)')),
+         paper_bgcolor = 'rgb(243, 243, 243)', #ensure better contrast, subtly adjusting the bg color
+         plot_bgcolor = 'rgb(243, 243, 243)')
+p2
+```
